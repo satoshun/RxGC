@@ -18,7 +18,11 @@ public class RxGC {
 
   private final static int DEFAULT_WAIT_MS = 1000;
 
-  private final static boolean IS_DEBUG = true;
+  private static boolean IS_DEBUG = false;
+
+  public static void enableDebug() {
+    IS_DEBUG = true;
+  }
 
   public static Completable watch(Object target) {
     ReferenceQueue<Object> queue = new ReferenceQueue<>();
