@@ -29,7 +29,7 @@ android {
 
 dependencies {
     localCompile project(':rxgc')
-    publishCompile 'com.github.satoshun:RxGC:0.1.0'
+    publishCompile 'com.github.satoshun:RxGC:0.1.1'
 
     compile 'com.android.support:appcompat-v7:25.0.0'
 
