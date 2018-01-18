@@ -14,8 +14,6 @@ import io.reactivex.annotations.NonNull;
 
 public class RxGC {
 
-  private final static int DEFAULT_WAIT_MS = 1000;
-
   public static Completable watch(Object target) {
     ReferenceQueue<Object> queue = new ReferenceQueue<>();
     Observable<Reference<Object>> observable = internalWatch(Collections.singletonList(new WeakReference<>(target, queue)), queue);
