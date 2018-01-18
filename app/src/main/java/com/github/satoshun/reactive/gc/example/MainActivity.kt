@@ -3,8 +3,10 @@ package com.github.satoshun.reactive.gc.example
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import android.widget.Toast
 import com.github.satoshun.reactive.gc.RxGC
 import com.github.satoshun.reactive.gc.watchGC
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 class MainActivity : AppCompatActivity() {
@@ -26,11 +28,14 @@ class MainActivity : AppCompatActivity() {
   private fun testSingleRefWatch() {
     target!!.watchGC()
         .subscribeOn(Schedulers.io())
-        .subscribe { Log.d("RxGC single", "GCed") }
+        .observeOn(AndroidSchedulers.mainThread())
+        .subscribe {
+          Toast.makeText(this, "did garbage collection", Toast.LENGTH_LONG).show()
+        }
 
     Thread {
       try {
-        Thread.sleep(3000)
+        Thread.sleep(2000)
       } catch (e: InterruptedException) {
         e.printStackTrace()
       }
@@ -44,19 +49,27 @@ class MainActivity : AppCompatActivity() {
     RxGC.watch<List<String>>(target1!!, target2)
         .subscribeOn(Schedulers.io())
         .subscribe(
-            { ref -> Log.d("RxGC multi next", ref.get().toString()) },
+            { ref -> Toast.makeText(this, "did garbage collection $ref", Toast.LENGTH_LONG).show() },
             { e -> Log.e("RxGC multi error", e.message) },
             { Log.d("RxGC multi complete", "complete") })
 
     Thread {
       try {
-        Thread.sleep(3000)
+        Thread.sleep(5000)
       } catch (e: InterruptedException) {
         e.printStackTrace()
       }
 
       // release object
       target1 = null
+
+      try {
+        Thread.sleep(2000)
+      } catch (e: InterruptedException) {
+        e.printStackTrace()
+      }
+
+      // release object
       target2 = null
     }.start()
   }

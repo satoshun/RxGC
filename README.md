@@ -7,7 +7,7 @@ this library can detect instance is called from GC.
 
 ## install
 
-gradle 
+add your gradle script
 
 ```
 allprojects {
@@ -18,7 +18,13 @@ allprojects {
 ```
 
 ```gradle
-compile 'com.github.satoshun:RxGC:$latest_version'
+implementation 'com.github.satoshun.RxGC:rxgc:$latest_version'
+```
+
+for kotlin
+
+```gradle
+implementation 'com.github.satoshun.RxGC:rxgc-kotlin:$latest_version'
 ```
 
 
