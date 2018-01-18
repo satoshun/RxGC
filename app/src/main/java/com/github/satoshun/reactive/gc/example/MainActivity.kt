@@ -4,15 +4,15 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.github.satoshun.reactive.gc.RxGC
+import com.github.satoshun.reactive.gc.watchGC
 import io.reactivex.schedulers.Schedulers
-import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
   private var target: Any? = Any()
 
   private var target1: List<String>? = ArrayList()
-  private var target2: List<String>? = LinkedList()
+  private var target2: List<String>? = ArrayList()
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun testSingleRefWatch() {
-    RxGC.watch(target)
+    target!!.watchGC()
         .subscribeOn(Schedulers.io())
         .subscribe { Log.d("RxGC single", "GCed") }
 
@@ -41,7 +41,7 @@ class MainActivity : AppCompatActivity() {
   }
 
   private fun testMultiRefWatch() {
-    RxGC.watch<List<String>>(target1, target2)
+    RxGC.watch<List<String>>(target1!!, target2)
         .subscribeOn(Schedulers.io())
         .subscribe(
             { ref -> Log.d("RxGC multi next", ref.get().toString()) },
