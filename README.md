@@ -18,7 +18,7 @@ allprojects {
 ```
 
 ```gradle
-compile 'com.github.satoshun:RxGC:0.1.1'
+compile 'com.github.satoshun:RxGC:$latest_version'
 ```
 
 
@@ -28,5 +28,5 @@ compile 'com.github.satoshun:RxGC:0.1.1'
 Object target = new Object();
 RxGC.watch(target)
         .subscribeOn(Schedulers.io())
-        .subscribe(() -> Log.d("RxGC single", "GCed"));
+        .subscribe(() -> Log.d("did Garbage Collection"));
 ```
