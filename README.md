@@ -1,3 +1,5 @@
+[![](https://jitpack.io/v/satoshun/RxGC.svg)](https://jitpack.io/#satoshun/RxGC)
+
 # RxGC is garbage collection detector for RxJava2.x
 
 this library can detect instance is called from GC.
