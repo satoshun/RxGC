@@ -7,23 +7,14 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import io.reactivex.Completable;
 import io.reactivex.Observable;
-import io.reactivex.ObservableEmitter;
-import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.annotations.NonNull;
 
 public class RxGC {
 
   private final static int DEFAULT_WAIT_MS = 1000;
-
-  private static boolean IS_DEBUG = false;
-
-  public static void enableDebug() {
-    IS_DEBUG = true;
-  }
 
   public static Completable watch(Object target) {
     ReferenceQueue<Object> queue = new ReferenceQueue<>();
@@ -43,30 +34,6 @@ public class RxGC {
 
   private static <T> Observable<Reference<T>> internalWatch(final List<? extends Reference<T>> targets,
                                                             final ReferenceQueue<T> queue) {
-    return Observable.create(new ObservableOnSubscribe<Reference<T>>() {
-
-      // avoids GC
-      private final List<? extends Reference<T>> references = targets;
-      private final AtomicInteger count = new AtomicInteger();
-
-      @Override
-      public void subscribe(ObservableEmitter<Reference<T>> e) throws Exception {
-        while (true) {
-          Reference<? extends T> ref = queue.poll();
-          if (ref != null) {
-            e.onNext((Reference<T>) ref);
-            if (count.incrementAndGet() >= targets.size()) {
-              break;
-            }
-            continue;
-          }
-          Thread.sleep(DEFAULT_WAIT_MS);
-          if (IS_DEBUG) {
-            Runtime.getRuntime().gc();
-          }
-        }
-        e.onComplete();
-      }
-    });
+    return new GCObservable<>(targets, queue);
   }
 }
