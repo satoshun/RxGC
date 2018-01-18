@@ -42,6 +42,9 @@ class MainActivity : AppCompatActivity() {
 
       // release object
       target = null
+
+      // force gc
+      Runtime.getRuntime().gc()
     }.start()
   }
 
@@ -63,6 +66,9 @@ class MainActivity : AppCompatActivity() {
       // release object
       target1 = null
 
+      // force gc for debug
+      Runtime.getRuntime().gc()
+
       try {
         Thread.sleep(2000)
       } catch (e: InterruptedException) {
@@ -71,6 +77,9 @@ class MainActivity : AppCompatActivity() {
 
       // release object
       target2 = null
+
+      // force gc for debug
+      Runtime.getRuntime().gc()
     }.start()
   }
 }
