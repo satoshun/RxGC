@@ -13,6 +13,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.annotations.NonNull;
 
 public class RxGC {
 
@@ -30,7 +31,7 @@ public class RxGC {
     return Completable.fromObservable(observable);
   }
 
-  public static <T> Observable<Reference<T>> watch(T target, T... targets) {
+  public static <T> Observable<Reference<T>> watch(@NonNull T target, T... targets) {
     ReferenceQueue<T> queue = new ReferenceQueue<>();
     ArrayList<WeakReference<T>> references = new ArrayList<>();
     references.add(new WeakReference<>(target, queue));

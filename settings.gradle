@@ -1,1 +1,1 @@
-include ':app', ':rxgc'
+include ':app', ':rxgc', ':rxgc-kotlin'
